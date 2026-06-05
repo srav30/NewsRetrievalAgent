@@ -1,6 +1,6 @@
-# NewsRetrievalAgent
+# Agentic AI POC
 
-NewsRetrievalAgent is a Python project that combines a Strands agent with a NewsData retrieval tool.
+Agentic AI POC is a Python project that combines a Strands agent with tools for news retrieval, place geocoding, and weather forecasts.
 
 ## Functionality
 
@@ -14,7 +14,7 @@ NewsRetrievalAgent is a Python project that combines a Strands agent with a News
 ## File Structure
 
 ```text
-NewsRetrievalAgent/
+AgenticAIPOC/
 ├── README.md
 ├── pyproject.toml
 ├── src/
@@ -23,14 +23,18 @@ NewsRetrievalAgent/
 │       ├── __main__.py
 │       ├── agent.py
 │       ├── main.py
-│       └── newsretrieval.py
+│       ├── newsretrieval.py
+│       └── weather.py
 └── tests/
     └── test_main.py
 ```
 
 - `pyproject.toml` defines the package metadata, build backend, CLI script, pytest settings, and Ruff lint rules.
-- `src/news_retrieval_agent/agent.py` configures the Strands agent, loads the OpenAI API key, registers tools, and runs a sample stock-market news prompt.
+- `src/news_retrieval_agent/agent.py` configures the Strands agent, loads the OpenAI API key, and registers the available tools.
+- `src/news_retrieval_agent/controller.py` exposes the `/askSomething` API endpoint and HTML page.
+- `src/news_retrieval_agent/geocoding.py` resolves free-form place names to latitude and longitude.
 - `src/news_retrieval_agent/newsretrieval.py` contains the NewsData API client and the `get_news_descriptions` Strands tool.
+- `src/news_retrieval_agent/weather.py` contains the Open-Meteo weather client and forecast tool.
 - `src/news_retrieval_agent/main.py` contains the CLI entry point.
 - `src/news_retrieval_agent/__main__.py` allows the package to run through Python module execution.
 - `tests/test_main.py` verifies the CLI greeting output.

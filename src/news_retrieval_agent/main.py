@@ -1,8 +1,8 @@
-"""Entry point for the NewsRetrievalAgent CLI."""
+"""Entry point for the Agentic AI POC CLI."""
 
 
 def main() -> None:
-    print("Hello from NewsRetrievalAgent!")
+    print("Hello from Agentic AI POC!")
 
 
 if __name__ == "__main__":

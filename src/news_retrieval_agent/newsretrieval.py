@@ -8,6 +8,7 @@ from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 
 from dotenv import load_dotenv
+
 from strands import tool
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
@@ -41,13 +42,16 @@ class NewsRetrieval:
             with urlopen(request, timeout=20) as response:
                 payload = json.loads(response.read().decode("utf-8"))
         except HTTPError as exc:
-            raise RuntimeError(f"NewsData request failed with status {exc.code}") from exc
+            message = f"NewsData request failed with status {exc.code}"
+            raise RuntimeError(message) from exc
         except URLError as exc:
             raise RuntimeError(f"NewsData request failed: {exc.reason}") from exc
         except json.JSONDecodeError as exc:
             raise RuntimeError("NewsData response was not valid JSON") from exc
 
-        articles = payload.get("results", payload) if isinstance(payload, dict) else payload
+        articles = (
+            payload.get("results", payload) if isinstance(payload, dict) else payload
+        )
         if not isinstance(articles, list):
             raise RuntimeError("NewsData response did not include a list of articles")
 
