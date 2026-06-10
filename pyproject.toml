@@ -9,9 +9,12 @@ description = "Agentic AI POC Python project"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
+    "chromadb>=0.5",
     "fastapi",
+    "openai>=1.0",
     "openmeteo-requests",
     "pandas",
+    "python-dotenv>=1.0",
     "requests-cache",
     "retry-requests",
     "uvicorn[standard]",

@@ -1,6 +1,6 @@
 # Agentic AI POC
 
-Agentic AI POC is a Python project that combines a Strands agent with tools for news retrieval, place geocoding, and weather forecasts.
+Agentic AI POC is a Python project that combines a Strands agent with tools for news retrieval, place geocoding, weather forecasts, and local RAG retrieval.
 
 ## Functionality
 
@@ -9,6 +9,7 @@ Agentic AI POC is a Python project that combines a Strands agent with tools for 
 - Provides a `get_news_descriptions` Strands tool that calls the NewsData latest-news API.
 - Uses `NEWSDATA_API_KEY` to fetch articles by search keyword and country.
 - Returns the first five non-empty article descriptions from the NewsData response.
+- Uses a bundled ChromaDB vector store in `data/chroma` for private document retrieval.
 - Includes a simple package entry point that prints a CLI greeting.
 
 ## File Structure
@@ -16,6 +17,8 @@ Agentic AI POC is a Python project that combines a Strands agent with tools for 
 ```text
 AgenticAIPOC/
 ├── README.md
+├── data/
+│   └── chroma/
 ├── pyproject.toml
 ├── src/
 │   └── news_retrieval_agent/
@@ -24,6 +27,7 @@ AgenticAIPOC/
 │       ├── agent.py
 │       ├── main.py
 │       ├── newsretrieval.py
+│       ├── rag_retrieval.py
 │       └── weather.py
 └── tests/
     └── test_main.py
@@ -34,6 +38,7 @@ AgenticAIPOC/
 - `src/news_retrieval_agent/controller.py` exposes the `/askSomething` API endpoint and HTML page.
 - `src/news_retrieval_agent/geocoding.py` resolves free-form place names to latitude and longitude.
 - `src/news_retrieval_agent/newsretrieval.py` contains the NewsData API client and the `get_news_descriptions` Strands tool.
+- `src/news_retrieval_agent/rag_retrieval.py` queries the bundled ChromaDB vector store for relevant private document context.
 - `src/news_retrieval_agent/weather.py` contains the Open-Meteo weather client and forecast tool.
 - `src/news_retrieval_agent/main.py` contains the CLI entry point.
 - `src/news_retrieval_agent/__main__.py` allows the package to run through Python module execution.

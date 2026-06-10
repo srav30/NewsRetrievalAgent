@@ -23,6 +23,7 @@ dist/
 .ruff_cache/
 .coverage
 htmlcov/
+logs/
 
 # IDE
 .idea/

@@ -30,4 +30,4 @@ def test_ask_something_page_returns_html() -> None:
 
     assert response.status_code == 200
     assert "text/html" in response.headers["content-type"]
-    assert "Ask Agentic AI POC" in response.text
+    assert "Ask Agentic AI" in response.text

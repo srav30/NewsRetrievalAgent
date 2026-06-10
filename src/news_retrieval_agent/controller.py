@@ -1,5 +1,8 @@
 """HTTP controller for asking Agentic AI POC."""
 
+from pathlib import Path
+from pprint import pformat
+
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import HTMLResponse
 from pydantic import BaseModel, Field
@@ -7,6 +10,8 @@ from pydantic import BaseModel, Field
 from news_retrieval_agent.agent import ask_agent_with_tools
 
 APP_NAME = "Agentic AI POC"
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+REQUEST_LOG = PROJECT_ROOT / "logs" / "agent_debug.log"
 
 app = FastAPI(title=APP_NAME)
 
@@ -140,12 +145,42 @@ def ask_something_page() -> str:
 @app.post("/askSomething", response_model=AskSomethingResponse)
 def ask_something(request: AskSomethingRequest) -> AskSomethingResponse:
     """Ask the LLM agent and return its tool-assisted response."""
+    _debug_log(
+        {
+            "event": "http_request",
+            "endpoint": "/askSomething",
+            "question": request.question,
+        }
+    )
     try:
         answer = ask_agent_with_tools(request.question.strip())
     except Exception as exc:
+        _debug_log(
+            {
+                "event": "http_error",
+                "endpoint": "/askSomething",
+                "error": str(exc),
+            }
+        )
         raise HTTPException(status_code=500, detail=str(exc)) from exc
 
+    _debug_log(
+        {
+            "event": "http_response",
+            "endpoint": "/askSomething",
+            "response": answer.response,
+            "tools_used": answer.tools_used,
+        }
+    )
     return AskSomethingResponse(
         response=answer.response,
         tools_used=answer.tools_used,
     )
+
+
+def _debug_log(value: object) -> None:
+    text = pformat(value, width=120)
+    print(text, flush=True)
+    REQUEST_LOG.parent.mkdir(parents=True, exist_ok=True)
+    with REQUEST_LOG.open("a", encoding="utf-8") as log_file:
+        log_file.write(f"{text}\n")
